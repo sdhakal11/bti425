@@ -6,14 +6,14 @@ WEB422 – Assignment 1
 ** Name: Shaswot Dhakal
 **Student ID: 114460223
 **Date: 2024 Jan 19
-**Cyclic Link: _______________________________________________________________
+**Cyclic Link: https://crimson-slug-cap.cyclic.app/
 *********************************************************************************/
 
 /*
-shaswotdhakal
+
 4wBJyNmqibVIT4Qk
 
-mongodb+srv://shaswotdhakal:4wBJyNmqibVIT4Qk@cluster1.vgxvqbc.mongodb.net/?retryWrites=true&w=majority
+mongodb+srv://:4wBJyNmqibVIT4Qk@cluster1.vgxvqbc.mongodb.net/?retryWrites=true&w=majority
 
 */
 
@@ -21,77 +21,108 @@ mongodb+srv://shaswotdhakal:4wBJyNmqibVIT4Qk@cluster1.vgxvqbc.mongodb.net/?retry
 
 const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv');
-const MoviesDB = require('./modules/moviesDB.js');
 
+const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
+
+const MoviesDB = require('./modules/moviesDB.js');
+
 
 app.use(cors());
 app.use(express.json());
 
 const db = new MoviesDB();
+app.get('/', (req, res) => {
+  res.json({ message: 'API Listening' });
+});
 
 app.post('/api/movies', async (req, res) => {
   try {
-    const movie = await db.addNewMovie(req.body);
-    res.status(201).json(movie);
-  } catch (err) {
-    res.status(500).json({ error: err.toString() });
+      const newMovie = await db.addNewMovie(req.body);
+      res.status(201).json(newMovie);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 app.get('/api/movies', async (req, res) => {
   try {
-    const { page, perPage, title } = req.query;
-    const movies = await db.getAllMovies(page, perPage, title);
-    res.json(movies);
-  } catch (err) {
-    res.status(500).json({ error: err.toString() });
+      const page = parseInt(req.query.page) || 1;
+      const perPage = parseInt(req.query.perPage) || 10;
+      const title = req.query.title || '';
+
+      const movies = await db.getAllMovies(page, perPage, title);
+
+      res.json(movies);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
+
 app.get('/api/movies/:id', async (req, res) => {
   try {
-    const movie = await db.getMovieById(req.params.id);
-    if (movie) {
-      res.json(movie);
-    } else {
-      res.status(404).json({ error: 'Movie not found' });
-    }
-  } catch (err) {
-    res.status(500).json({ error: err.toString() });
+      const movieId = req.params.id;
+      const movie = await db.getMovieById(movieId);
+      if (!movie) {
+          res.status(404).json({ error: 'Movie not found' });
+      } else {
+          res.json(movie);
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
 app.put('/api/movies/:id', async (req, res) => {
   try {
-    const result = await db.updateMovieById(req.body, req.params.id);
-    if (result.nModified > 0) {
-      res.json({ message: 'Movie updated successfully' });
-    } else {
-      res.status(404).json({ error: 'Movie not found' });
-    }
-  } catch (err) {
-    res.status(500).json({ error: err.toString() });
+      const { id: movieId } = req.params;
+      const { body: updatedData } = req;
+
+      const result = await db.updateMovieById(updatedData, movieId);
+
+      const responseMessage = result.nModified === 1
+          ? { message: 'Movie updated successfully' }
+          : { error: 'Movie not found or not updated' };
+
+      res.status(result.nModified === 1 ? 200 : 404).json(responseMessage).send();
+
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 app.delete('/api/movies/:id', async (req, res) => {
   try {
-    const result = await db.deleteMovieById(req.params.id);
-    if (result.deletedCount > 0) {
-      res.status(204).end();
-    } else {
-      res.status(404).json({ error: 'Movie not found' });
-    }
-  } catch (err) {
-    res.status(500).json({ error: err.toString() });
+      const movieId = req.params.id;
+
+      const result = await db.deleteMovieById(movieId);
+
+      if (result.deletedCount === 1) {
+          res.json({ message: 'Movie deleted successfully' });
+      } else {
+          res.status(404).json({ error: 'Movie not found or not deleted' });
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-db.initialize(process.env.MONGODB_CONN_STRING)
-  .then(() => app.listen(port, () => console.log(`Server is running on port ${port}`)))
-  .catch(err => console.error(err));
+db.initialize(process.env.MONGODB_CONN_STRING).then(() => {
+  app.listen(port, () => {
+      console.log(`server listening on: ${port}`);
+  });
+}).catch((err) => {
+  console.log(err);
+});
+
