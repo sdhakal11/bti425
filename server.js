@@ -10,8 +10,11 @@ WEB422 – Assignment 1
 *********************************************************************************/
 
 /*
-id- sdhakal11
-pass- VXGkSImq5T4H8NQA
+shaswotdhakal
+4wBJyNmqibVIT4Qk
+
+mongodb+srv://shaswotdhakal:4wBJyNmqibVIT4Qk@cluster1.vgxvqbc.mongodb.net/?retryWrites=true&w=majority
+
 */
 
 
