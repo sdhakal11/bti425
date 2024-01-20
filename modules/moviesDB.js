@@ -4,7 +4,7 @@ pass- VXGkSImq5T4H8NQA
 */
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://sdhakal11:VXGkSImq5T4H8NQA@cluster0.mongodb.net/sample_mflix?retryWrites=true&w=majority";
+const uri = "mongodb+srv://shaswotdhakal:4wBJyNmqibVIT4Qk@cluster1.vgxvqbc.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   const collection = client.db("sample_mflix").collection("movies");
@@ -13,6 +13,7 @@ client.connect(err => {
 });
 
 module.exports = client;
+
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
