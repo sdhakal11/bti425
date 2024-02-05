@@ -21,8 +21,11 @@ mongodb+srv://:4wBJyNmqibVIT4Qk@cluster1.vgxvqbc.mongodb.net/?retryWrites=true&w
 
 
 const express = require('express');
+
 const mongoose = require('mongoose');
+
 const app = express();
+
 const PORT = process.env.PORT || 3000;
 
 mongoose.connect('mongodb+srv://shaswotdhakal:4wBJyNmqibVIT4Qk@cluster1.vgxvqbc.mongodb.net/?retryWrites=true&w=majority', {
