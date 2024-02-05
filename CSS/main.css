@@ -1,0 +1,21 @@
+#moviesTable tr:hover 
+{
+    cursor: pointer;
+}
+
+.navbar 
+{
+    width: 100%;
+}
+
+#searchForm .btn-success 
+{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#searchForm .btn-danger
+{
+    margin-left: 10px;
+    margin-right: 10px;
+}
