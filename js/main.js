@@ -1,3 +1,15 @@
+/********************************************************************************** 
+WEB422 – Assignment 2
+* I declare that this assignment is my own work in accordance with Seneca Academic Policy.
+* No part of this assignment has been copied manually or electronically from any other source
+* (including web sites) or distributed to other students.
+** Name: Shaswot Dhakal
+**Student ID: 114460223
+**Date: 2024 Feb 4
+**Cyclic Link: https://crimson-slug-cap.cyclic.app/
+**render Link: https://bti425.onrender.com/
+*********************************************************************************/
+
 // Function to load movie data
 document.addEventListener('DOMContentLoaded', function () {
   let page = 1;
