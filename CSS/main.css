@@ -3,9 +3,17 @@
     cursor: pointer;
 }
 
+body
+{
+  background-color: #343a40;
+  color: #fff;
+}
+
+
 .navbar 
 {
     width: 100%;
+    background-color: #343a40;
 }
 
 #searchForm .btn-success 
